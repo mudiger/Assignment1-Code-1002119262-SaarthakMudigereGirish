@@ -25,6 +25,45 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/picture/", methods=['GET'])
+def name():
+    name = ""
+    picture = ""
+    if request.method == "GET":
+        name = request.args.get('name')
+
+        query = "SELECT Picture FROM dbo.people WHERE name = ?"
+        cursor.execute(query, name)
+
+        # Fetch the first row from the result set
+        row = cursor.fetchone()
+        if row is not None:
+            picture = row[0]
+        else:
+            picture = None
+            name = None
+
+        return render_template("picture.html", name=name, picture=picture)
+
+
+@app.route("/group/", methods=['GET'])
+def group():
+    salary = ""
+    salpics = []
+    if request.method == "GET":
+        salary = request.args.get('salary')
+
+        # Execute a simple select query
+        query = "SELECT Picture FROM dbo.people where Salary<?"
+        cursor.execute(query, salary)
+        # Fetch the first row from the result set
+        rows = cursor.fetchall()
+        for i in rows:
+            salpics.append(i[0])
+
+        return render_template("group.html", salpics=salpics)
+
+'''
 @app.route("/name/", methods=['GET'])
 def name():
     name = ""
@@ -54,6 +93,123 @@ def name():
                 picture = None
         return render_template("picture.html", name=name)
 
+@app.route("/name/", methods=['GET'])
+def name():
+    name = ""
+    salpics = []
+    picture=''
+    if request.method == "GET":
+        name = request.args.get('name')
+
+        # Execute a simple select query
+        if(name=="all"):
+            query = "SELECT Picture FROM dbo.people where Salary<9000"
+            cursor.execute(query)
+            # Fetch the first row from the result set
+            rows = cursor.fetchall()
+            for i in rows:
+                salpics.append(i[0])
+
+        else:
+            query = "SELECT Picture FROM dbo.people WHERE name = ?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            if row is not None:
+                picture = row.Picture
+            else:
+                picture = None
+        return render_template("picture.html", name=name)
+
+
+@app.route("/name/", methods=['GET'])
+def name():
+    name = ""
+    salpics = []
+    picture=''
+    if request.method == "GET":
+        name = request.args.get('name')
+
+        # Execute a simple select query
+        if(name=="all"):
+            query = "SELECT Picture FROM dbo.people where Salary<9000"
+            cursor.execute(query)
+            # Fetch the first row from the result set
+            rows = cursor.fetchall()
+            for i in rows:
+                salpics.append(i[0])
+
+        else:
+            query = "SELECT Picture FROM dbo.people WHERE name = ?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            if row is not None:
+                picture = row.Picture
+            else:
+                picture = None
+        return render_template("picture.html", name=name)
+
+@app.route("/name/", methods=['GET'])
+def name():
+    name = ""
+    salpics = []
+    picture=''
+    if request.method == "GET":
+        name = request.args.get('name')
+
+        # Execute a simple select query
+        if(name=="all"):
+            query = "SELECT Picture FROM dbo.people where Salary<9000"
+            cursor.execute(query)
+            # Fetch the first row from the result set
+            rows = cursor.fetchall()
+            for i in rows:
+                salpics.append(i[0])
+
+        else:
+            query = "SELECT Picture FROM dbo.people WHERE name = ?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            if row is not None:
+                picture = row.Picture
+            else:
+                picture = None
+        return render_template("picture.html", name=name)
+
+@app.route("/name/", methods=['GET'])
+def name():
+    name = ""
+    salpics = []
+    picture=''
+    if request.method == "GET":
+        name = request.args.get('name')
+
+        # Execute a simple select query
+        if(name=="all"):
+            query = "SELECT Picture FROM dbo.people where Salary<9000"
+            cursor.execute(query)
+            # Fetch the first row from the result set
+            rows = cursor.fetchall()
+            for i in rows:
+                salpics.append(i[0])
+
+        else:
+            query = "SELECT Picture FROM dbo.people WHERE name = ?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            if row is not None:
+                picture = row.Picture
+            else:
+                picture = None
+        return render_template("picture.html", name=name)
+'''
 
 
 if __name__ == "__main__":

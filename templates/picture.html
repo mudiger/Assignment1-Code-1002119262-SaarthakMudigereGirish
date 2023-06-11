@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "base.html" %}
+
+{% block head %}
     <title>Picture</title>
-</head>
-<body>
-    <form>
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name">
-        <button type="submit">submit</button>
-    </form>
-</body>
-</html>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form>
+            <label for="name">Enter name: </label>
+            <input type="text" id="name" name="name">
+            <button type="submit">Submit</button><br>
+        </form>
+
+        {% if name %}
+            <h2>Hello, {{ name }}!</h2>
+        {% endif %}
+
+        {% if picture  %}
+            <img src="{{ picture }}" alt="Profile Picture">
+        {% endif %}
+
+    </div>
+
+{% endblock %}
