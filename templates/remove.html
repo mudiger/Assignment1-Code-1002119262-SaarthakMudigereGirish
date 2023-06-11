@@ -13,7 +13,19 @@
         </form>
 
         {% if name %}
-            <h2>Delete row {{ name }}</h2>
+            <h2>Deleting row  with name {{ name }}</h2>
+        {% endif %}
+
+        {% if salpics %}
+        <ul style="list-style-type:none">
+            <table>
+                <tr>
+                    {% for salpic in salpics %}
+                    <td> {{ salpic }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </ul>
         {% endif %}
 
     </div>

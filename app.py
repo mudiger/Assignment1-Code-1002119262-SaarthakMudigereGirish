@@ -116,19 +116,28 @@ def add():
 @app.route("/remove/", methods=['GET', 'POST'])
 def remove():
     name = ""
+    salpics = []
     if request.method == "POST":
         name = request.form.get('name')
 
-        query = "DELETE FROM dbo.people WHERE name = ?"
+        # Execute a query
+        query = "SELECT * FROM dbo.people WHERE name=?"
         cursor.execute(query, name)
 
-        # Fetch the first row from the result set
+        # Fetch a single row
         row = cursor.fetchone()
-        if row is not None:
-            name = row.Picture
-        else:
-            name = None
-        return render_template("remove.html", name=name)
+
+        print(row)
+        # Access row values
+        for i in range(len(row)):
+            # Assuming the table has columns named 'column1', 'column2', and 'column3'
+            salpics.append(row[i])
+
+        query = "DELETE FROM dbo.people WHERE name = ?"
+        cursor.execute(query, name)
+        conn.commit()
+
+    return render_template("remove.html", name=name, salpics=salpics)
 
 
 @app.route("/keyword/", methods=['GET', 'POST'])
