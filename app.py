@@ -47,5 +47,5 @@ def hello_world():
 
     return render_template("index.html")
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     app.run()
