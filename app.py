@@ -3,6 +3,8 @@ from flask import Flask
 from flask import render_template
 import pyodbc
 import os
+from azure.storage.blob import BlobServiceClient
+
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -63,16 +65,22 @@ def group():
 
     return render_template("group.html", salpics=salpics)
 
-'''
+
 @app.route("/add/", methods=['GET', 'POST'])
 def add():
     name = ""
-    picture = ""
+    add = ""
+    picture=""
     if request.method == "POST":
-        name = request.form.get('name')
-        add = request.form.get('add')
+        name = request.form['addname']
+        add = request.files['add']
+        url = upload(add, name)
 
-        query = "SELECT Picture FROM dbo.people WHERE name = ?"
+        query = "UPDATE dbo.people SET Picture=? WHERE name = ?"
+        cursor.execute(query, url, name)
+        conn.commit()
+
+        query = "SELECT Picture FROM dbo.people WHERE name=?"
         cursor.execute(query, name)
 
         # Fetch the first row from the result set
@@ -84,33 +92,14 @@ def add():
             name = None
 
     return render_template("add.html", name=name, picture=picture)
-    add = ""
-    salpics = []
-    picture=''
-    if request.method == "POST":
-        add = request.form.get('add')
 
-        # Execute a simple select query
-        if(name=="all"):
-            query = "UPDATE Picture FROM dbo.people where Salary<9000"
-            cursor.execute(query)
-            # Fetch the first row from the result set
-            rows = cursor.fetchall()
-            for i in rows:
-                salpics.append(i[0])
 
-        else:
-            query = "SELECT Picture FROM dbo.people WHERE name = ?"
-            cursor.execute(query, name)
-
-            # Fetch the first row from the result set
-            row = cursor.fetchone()
-            if row is not None:
-                picture = row.Picture
-            else:
-                picture = None
-    return render_template("picture.html", name=name)
-'''
+def upload(file,name):
+    account_url="DefaultEndpointsProtocol=https;AccountName=storageaccount1002119262;AccountKey=3g3TqtLPd318jgDhHPM2llwevOb1jNHj3oN0BbaaZXiJk8T8k31aj+JIsPwL0RrPeKy28s2/mCGa+AStbbWoIQ==;EndpointSuffix=core.windows.net"
+    blob_account_client = BlobServiceClient.from_connection_string(account_url)
+    blob_client=blob_account_client.get_blob_client("assignment1-container-1002119262-saarthakmudigeregirish",name+".jpg")
+    blob_client.upload_blob(file,overwrite=True)
+    return "https://storageaccount1002119262.blob.core.windows.net/assignment1-container-1002119262-saarthakmudigeregirish/"+name+".jpg"
 
 
 @app.route("/remove/", methods=['GET', 'POST'])
@@ -191,4 +180,4 @@ def salary():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

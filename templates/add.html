@@ -5,24 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-
-        <form method="POST">
-            <label for="name">Enter name: </label>
-            <input type="text" id="name" name="name">
-            <button type="submit">Submit</button><br>
-        </form>
-
-        {% if name %}
-            <h2>Hello, {{ name }}!</h2>
-        {% endif %}
-    </div>
 
     <div>
-        <form method="POST",enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" action="/add/" >
+            <label for="addname">Enter name: </label>
+            <input type="text" id="addname" name="addname"><br><br>
             <label for="add">Enter a .jpeg file: </label>
-            <input type="image" id="add" name="add">
-            <button type="submit">Submit</button><br>
+            <input type="file" id="add" name="add">
+            <input type="submit" placeholder="Submit"><br>
         </form>
 
         {% if name %}
