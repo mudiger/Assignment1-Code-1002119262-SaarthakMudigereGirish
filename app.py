@@ -62,7 +62,6 @@ def group():
         rows = cursor.fetchall()
         for i in rows:
             salpics.append(i[0])
-
     return render_template("group.html", salpics=salpics)
 
 
