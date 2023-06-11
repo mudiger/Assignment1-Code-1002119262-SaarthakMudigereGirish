@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'Assignment1-WebApp-1002119262-SaarthakMudigereGirish'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_84F69F41FEA246839E66068A0E7F1D15 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F333171CA6694E71BCDB500604AA2794 }}
