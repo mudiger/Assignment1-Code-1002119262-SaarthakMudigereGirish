@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Picture</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+
+        <form method="POST">
+            <label for="name">Enter name: </label>
+            <input type="text" id="name" name="name">
+            <button type="submit">Submit</button><br>
+        </form>
+
+        {% if name %}
+            <h2>Hello, {{ name }}!</h2>
+        {% endif %}
+    </div>
+
+    <div>
+        <form method="POST",enctype="multipart/form-data">
+            <label for="add">Enter a .jpeg file: </label>
+            <input type="image" id="add" name="add">
+            <button type="submit">Submit</button><br>
+        </form>
+
+        {% if name %}
+            <h2>Hello, {{ name }}!</h2>
+        {% endif %}
+
+        {% if picture  %}
+            <img src="{{ picture }}" alt="Profile Picture">
+        {% endif %}
+
+    </div>
+
+{% endblock %}

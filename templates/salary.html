@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Salary</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form method="POST">
+            <label for="name">Enter name: </label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="salary">Enter Amount: </label>
+            <input type="number" id="salary" name="salary">
+            <button type="submit">Submit</button><br>
+        </form>
+
+        {% if name %}
+            <h2>Hello, {{ name }}!</h2>
+        {% endif %}
+
+        {% if salary  %}
+            <h3>Your new salary is: {{ salary }}</h3>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
