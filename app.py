@@ -25,12 +25,12 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/picture/", methods=['GET'])
+@app.route("/picture/", methods=['GET', 'POST'])
 def name():
     name = ""
     picture = ""
-    if request.method == "GET":
-        name = request.args.get('name')
+    if request.method == "POST":
+        name = request.form.get('name')
 
         query = "SELECT Picture FROM dbo.people WHERE name = ?"
         cursor.execute(query, name)
@@ -43,15 +43,15 @@ def name():
             picture = None
             name = None
 
-        return render_template("picture.html", name=name, picture=picture)
+    return render_template("picture.html", name=name, picture=picture)
 
 
-@app.route("/group/", methods=['GET'])
+@app.route("/group/", methods=['GET', 'POST'])
 def group():
     salary = ""
     salpics = []
-    if request.method == "GET":
-        salary = request.args.get('salary')
+    if request.method == "POST":
+        salary = request.form.get('salary')
 
         # Execute a simple select query
         query = "SELECT Picture FROM dbo.people where Salary<?"
@@ -61,7 +61,7 @@ def group():
         for i in rows:
             salpics.append(i[0])
 
-        return render_template("group.html", salpics=salpics)
+    return render_template("group.html", salpics=salpics)
 
 '''
 @app.route("/name/", methods=['GET'])
