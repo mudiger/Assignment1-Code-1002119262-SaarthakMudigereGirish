@@ -5,26 +5,34 @@ import pyodbc
 import os
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
-@app.route("/", methods=['GET'])
 
-def hello_world():
+driver = '{ODBC Driver 17 for SQL Server}'
+server = 'sqlserver-1002119262-saarthakmudigeregirish.database.windows.net'
+database = 'DataBase-1002119262-SaarthakMudigereGirish'
+username = 'saarthakmudigeregirish'
+password = 'Hello123'
+
+# Establish the connection
+conn = pyodbc.connect(f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}')
+
+# Create a cursor object
+cursor = conn.cursor()
+print(cursor)
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/name/", methods=['GET'])
+def name():
     name = ""
     salpics = []
     picture=''
     if request.method == "GET":
         name = request.args.get('name')
-        server = 'sqlserver-1002119262-saarthakmudigeregirish.database.windows.net'
-        database = 'DataBase-1002119262-SaarthakMudigereGirish'
-        username = 'saarthakmudigeregirish'
-        password = 'Hello123'
-        driver = '{ODBC Driver 17 for SQL Server}'
 
-        # Establish the connection
-        conn = pyodbc.connect(f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}')
-
-        # Create a cursor object
-        cursor = conn.cursor()
-        print(cursor)
         # Execute a simple select query
         if(name=="all"):
             query = "SELECT Picture FROM dbo.people where Salary<9000"
@@ -44,8 +52,9 @@ def hello_world():
                 picture = row.Picture
             else:
                 picture = None
+        return render_template("picture.html", name=name)
 
-    return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run()
