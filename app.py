@@ -45,7 +45,7 @@ def hello_world():
             else:
                 picture = None
 
-    return render_template("index.html", name=name, picture=picture,salpics=salpics)
+    return render_template("index.html")
 
 if __name__ == "_main_":
     app.run()
