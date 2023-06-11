@@ -64,8 +64,56 @@ def group():
     return render_template("group.html", salpics=salpics)
 
 '''
-@app.route("/name/", methods=['GET'])
-def name():
+@app.route("/add/", methods=['GET', 'POST'])
+def add():
+    name = ""
+    picture = ""
+    if request.method == "POST":
+        name = request.form.get('name')
+        add = request.form.get('add')
+
+        query = "SELECT Picture FROM dbo.people WHERE name = ?"
+        cursor.execute(query, name)
+
+        # Fetch the first row from the result set
+        row = cursor.fetchone()
+        if row is not None:
+            picture = row[0]
+        else:
+            picture = None
+            name = None
+
+    return render_template("add.html", name=name, picture=picture)
+    add = ""
+    salpics = []
+    picture=''
+    if request.method == "POST":
+        add = request.form.get('add')
+
+        # Execute a simple select query
+        if(name=="all"):
+            query = "UPDATE Picture FROM dbo.people where Salary<9000"
+            cursor.execute(query)
+            # Fetch the first row from the result set
+            rows = cursor.fetchall()
+            for i in rows:
+                salpics.append(i[0])
+
+        else:
+            query = "SELECT Picture FROM dbo.people WHERE name = ?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            if row is not None:
+                picture = row.Picture
+            else:
+                picture = None
+    return render_template("picture.html", name=name)
+
+
+@app.route("/remove/", methods=['GET'])
+def remove():
     name = ""
     salpics = []
     picture=''
@@ -93,96 +141,9 @@ def name():
                 picture = None
         return render_template("picture.html", name=name)
 
-@app.route("/name/", methods=['GET'])
-def name():
-    name = ""
-    salpics = []
-    picture=''
-    if request.method == "GET":
-        name = request.args.get('name')
 
-        # Execute a simple select query
-        if(name=="all"):
-            query = "SELECT Picture FROM dbo.people where Salary<9000"
-            cursor.execute(query)
-            # Fetch the first row from the result set
-            rows = cursor.fetchall()
-            for i in rows:
-                salpics.append(i[0])
-
-        else:
-            query = "SELECT Picture FROM dbo.people WHERE name = ?"
-            cursor.execute(query, name)
-
-            # Fetch the first row from the result set
-            row = cursor.fetchone()
-            if row is not None:
-                picture = row.Picture
-            else:
-                picture = None
-        return render_template("picture.html", name=name)
-
-
-@app.route("/name/", methods=['GET'])
-def name():
-    name = ""
-    salpics = []
-    picture=''
-    if request.method == "GET":
-        name = request.args.get('name')
-
-        # Execute a simple select query
-        if(name=="all"):
-            query = "SELECT Picture FROM dbo.people where Salary<9000"
-            cursor.execute(query)
-            # Fetch the first row from the result set
-            rows = cursor.fetchall()
-            for i in rows:
-                salpics.append(i[0])
-
-        else:
-            query = "SELECT Picture FROM dbo.people WHERE name = ?"
-            cursor.execute(query, name)
-
-            # Fetch the first row from the result set
-            row = cursor.fetchone()
-            if row is not None:
-                picture = row.Picture
-            else:
-                picture = None
-        return render_template("picture.html", name=name)
-
-@app.route("/name/", methods=['GET'])
-def name():
-    name = ""
-    salpics = []
-    picture=''
-    if request.method == "GET":
-        name = request.args.get('name')
-
-        # Execute a simple select query
-        if(name=="all"):
-            query = "SELECT Picture FROM dbo.people where Salary<9000"
-            cursor.execute(query)
-            # Fetch the first row from the result set
-            rows = cursor.fetchall()
-            for i in rows:
-                salpics.append(i[0])
-
-        else:
-            query = "SELECT Picture FROM dbo.people WHERE name = ?"
-            cursor.execute(query, name)
-
-            # Fetch the first row from the result set
-            row = cursor.fetchone()
-            if row is not None:
-                picture = row.Picture
-            else:
-                picture = None
-        return render_template("picture.html", name=name)
-
-@app.route("/name/", methods=['GET'])
-def name():
+@app.route("/keyword/", methods=['GET'])
+def keyword():
     name = ""
     salpics = []
     picture=''
@@ -210,6 +171,30 @@ def name():
                 picture = None
         return render_template("picture.html", name=name)
 '''
+@app.route("/salary/", methods=['GET', 'POST'])
+def salary():
+    name = ""
+    salary = ""
+    if request.method == "POST":
+        name = request.form.get('name')
+        salary = request.form.get('salary')
+
+        query = "UPDATE dbo.people SET Salary=? WHERE name=?"
+        cursor.execute(query, salary, name)
+        conn.commit()
+
+        query = "SELECT Salary FROM dbo.people WHERE name=?"
+        cursor.execute(query, name)
+
+        # Fetch the first row from the result set
+        row = cursor.fetchone()
+        if row is not None:
+            salary = row[0]
+        else:
+            name = None
+
+    return render_template("salary.html", name=name, salary=salary)
+
 
 
 if __name__ == "__main__":
