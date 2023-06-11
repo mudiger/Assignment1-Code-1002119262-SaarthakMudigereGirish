@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Group</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form method="POST">
+            <label for="salary">Salary less than: </label>
+            <input type="number" id="salary" name="salary">
+            <button type="submit">Submit</button><br>
+
+        </form>
+
+        {% if salpics %}
+        <ul style="list-style-type:none">
+            <h2>Hello, everyone!</h2><br>
+            {% for salpic in salpics %}
+                <li><img src="{{ salpic }}" alt="Salary Picture"></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    </div>
+
+{% endblock %}
