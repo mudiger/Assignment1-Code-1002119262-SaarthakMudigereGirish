@@ -28,7 +28,7 @@ def index():
 
 
 @app.route("/picture/", methods=['GET', 'POST'])
-def name():
+def picture():
     name = ""
     picture = ""
     system = ""
