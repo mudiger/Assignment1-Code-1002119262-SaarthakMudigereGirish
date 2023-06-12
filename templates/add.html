@@ -11,15 +11,17 @@
             <label for="addname">Enter name: </label>
             <input type="text" id="addname" name="addname"><br><br>
             <label for="add">Enter a .jpeg file: </label>
-            <input type="file" id="add" name="add">
-            <input type="submit" placeholder="Submit"><br>
+            <input type="file" id="add" name="add" accept="image/jpeg">
+            <input type="submit" value="Submit" placeholder="Submit"><br>
         </form>
 
         {% if name %}
             <h2>Hello, {{ name }}!</h2>
         {% endif %}
 
-        {% if picture  %}
+        {% if system is none %}
+            <h2> You don't exist in our system</h2>
+        {% elif picture  %}
             <img src="{{ picture }}" alt="Profile Picture">
         {% endif %}
 

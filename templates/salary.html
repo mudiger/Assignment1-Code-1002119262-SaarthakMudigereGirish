@@ -18,7 +18,10 @@
             <h2>Hello, {{ name }}!</h2>
         {% endif %}
 
-        {% if salary  %}
+
+        {% if system is none %}
+            <h2> You don't exist in our system</h2>
+        {% elif salary  %}
             <h3>New salary is: {{ salary }}</h3>
         {% endif %}
 

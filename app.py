@@ -31,6 +31,7 @@ def index():
 def name():
     name = ""
     picture = ""
+    system = ""
     if request.method == "POST":
         name = request.form.get('name')
 
@@ -40,12 +41,14 @@ def name():
         # Fetch the first row from the result set
         row = cursor.fetchone()
         if row is not None:
-            picture = row[0]
+            if row[0] is not None:
+                picture = row[0]
+            else:
+                picture = None
         else:
-            picture = None
-            name = None
+            system = None
 
-    return render_template("picture.html", name=name, picture=picture)
+    return render_template("picture.html", name=name, picture=picture, system=system)
 
 
 @app.route("/group/", methods=['GET', 'POST'])
@@ -69,42 +72,48 @@ def group():
 def add():
     name = ""
     add = ""
-    picture=""
+    picture = ""
+    system = ""
     if request.method == "POST":
         name = request.form['addname']
         add = request.files['add']
-        url = upload(add, name)
-
-        query = "UPDATE dbo.people SET Picture=? WHERE name = ?"
-        cursor.execute(query, url, name)
-        conn.commit()
 
         query = "SELECT Picture FROM dbo.people WHERE name=?"
         cursor.execute(query, name)
 
         # Fetch the first row from the result set
         row = cursor.fetchone()
-        if row is not None:
-            picture = row[0]
+        if row is None:
+            system = None
         else:
-            picture = None
-            name = None
+            url = upload(add, name)
+            query = "UPDATE dbo.people SET Picture=? WHERE name = ?"
+            cursor.execute(query, url, name)
+            conn.commit()
 
-    return render_template("add.html", name=name, picture=picture)
+            query = "SELECT Picture FROM dbo.people WHERE name=?"
+            cursor.execute(query, name)
+
+            # Fetch the first row from the result set
+            row = cursor.fetchone()
+            picture = row[0]
+
+    return render_template("add.html", name=name, picture=picture, system=system)
 
 
-def upload(file,name):
-    account_url="DefaultEndpointsProtocol=https;AccountName=storageaccount1002119262;AccountKey=3g3TqtLPd318jgDhHPM2llwevOb1jNHj3oN0BbaaZXiJk8T8k31aj+JIsPwL0RrPeKy28s2/mCGa+AStbbWoIQ==;EndpointSuffix=core.windows.net"
+def upload(file, name):
+    account_url = "DefaultEndpointsProtocol=https;AccountName=storageaccount1002119262;AccountKey=3g3TqtLPd318jgDhHPM2llwevOb1jNHj3oN0BbaaZXiJk8T8k31aj+JIsPwL0RrPeKy28s2/mCGa+AStbbWoIQ==;EndpointSuffix=core.windows.net"
     blob_account_client = BlobServiceClient.from_connection_string(account_url)
-    blob_client=blob_account_client.get_blob_client("assignment1-container-1002119262-saarthakmudigeregirish",name+".jpg")
-    blob_client.upload_blob(file,overwrite=True)
-    return "https://storageaccount1002119262.blob.core.windows.net/assignment1-container-1002119262-saarthakmudigeregirish/"+name+".jpg"
+    blob_client = blob_account_client.get_blob_client("assignment1-container-1002119262-saarthakmudigeregirish",name + ".jpg")
+    blob_client.upload_blob(file, overwrite=True)
+    return "https://storageaccount1002119262.blob.core.windows.net/assignment1-container-1002119262-saarthakmudigeregirish/" + name + ".jpg"
 
 
 @app.route("/remove/", methods=['GET', 'POST'])
 def remove():
     name = ""
     salpics = []
+    system = ""
     if request.method == "POST":
         name = request.form.get('name')
 
@@ -114,24 +123,26 @@ def remove():
 
         # Fetch a single row
         row = cursor.fetchone()
-
-        print(row)
-        # Access row values
-        for i in range(len(row)):
-            # Assuming the table has columns named 'column1', 'column2', and 'column3'
-            salpics.append(row[i])
+        if row is None:
+            system = None
+        else:
+            # Access row values
+            for i in range(len(row)):
+                # Assuming the table has columns named 'column1', 'column2', and 'column3'
+                salpics.append(row[i])
 
         query = "DELETE FROM dbo.people WHERE name = ?"
         cursor.execute(query, name)
         conn.commit()
 
-    return render_template("remove.html", name=name, salpics=salpics)
+    return render_template("remove.html", name=name, salpics=salpics, system=system)
 
 
 @app.route("/keyword/", methods=['GET', 'POST'])
 def keyword():
     name = ""
     keyword = ""
+    system = ""
     if request.method == "POST":
         name = request.form.get('name')
         keyword = request.form.get('keyword')
@@ -146,17 +157,21 @@ def keyword():
         # Fetch the first row from the result set
         row = cursor.fetchone()
         if row is not None:
-            keyword = row[0]
+            if row[0] is not None:
+                keyword = row[0]
+            else:
+                keyword = None
         else:
-            name = None
+            system = None
 
-    return render_template("keyword.html", name=name, keyword=keyword)
+    return render_template("keyword.html", name=name, keyword=keyword, system=system)
 
 
 @app.route("/salary/", methods=['GET', 'POST'])
 def salary():
     name = ""
     salary = ""
+    system = ""
     if request.method == "POST":
         name = request.form.get('name')
         salary = request.form.get('salary')
@@ -171,11 +186,14 @@ def salary():
         # Fetch the first row from the result set
         row = cursor.fetchone()
         if row is not None:
-            salary = row[0]
+            if row[0] is not None:
+                salary = row[0]
+            else:
+                salary = None
         else:
-            name = None
+            system = None
 
-    return render_template("salary.html", name=name, salary=salary)
+    return render_template("salary.html", name=name, salary=salary, system=system)
 
 
 if __name__ == "__main__":
