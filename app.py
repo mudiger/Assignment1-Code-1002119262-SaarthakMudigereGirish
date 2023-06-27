@@ -19,7 +19,6 @@ conn = pyodbc.connect(f'DRIVER={driver};SERVER={server};DATABASE={database};UID=
 
 # Create a cursor object
 cursor = conn.cursor()
-print(cursor)
 
 
 @app.route("/")
@@ -38,7 +37,6 @@ def picture():
         query = "SELECT Picture FROM dbo.people WHERE name = ?"
         cursor.execute(query, name)
 
-        # Fetch the first row from the result set
         row = cursor.fetchone()
         if row is not None:
             if row[0] is not None:
@@ -57,7 +55,6 @@ def group():
     salpics = []
     if request.method == "POST":
         salary = request.form.get('salary')
-
         # Execute a simple select query
         query = "SELECT Picture FROM dbo.people where Salary<?"
         cursor.execute(query, salary)
